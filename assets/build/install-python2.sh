@@ -52,18 +52,19 @@ wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
 sh bootstrap-salt.sh ${SALT_BOOTSTRAP_OPTS} git v${SALT_VERSION}
 chown -R ${SALT_USER}: ${SALT_ROOT_DIR}
 
-# Install python3 packages
+# Install python2 packages
 echo "Installing python3 packages ..."
 DEBIAN_FRONTEND=noninteractive apt-get install --yes --quiet --no-install-recommends \
-python3-mako python3-pycryptodome python3-cherrypy3 python3-git python3-u-msgpack \
-python3-ioflo python3-redis python3-gnupg python3-mysqldb python3-dateutil  python3-libnacl
+python-mako python-pycryptodome python-cherrypy3 python-git python-u-msgpack \
+python-redis python-gnupg python-mysqldb python-dateutil python-libnacl
 
 # Install pip3 python packages
-echo "Installing pip3 python packages ..."
-pip3 install "pygit2==v${PYGIT2_VERSION}" \
-     "M2Crypto==v${M2CRYPTO_VERSION}"
-
-pip install raet timelib
+echo "Installing pip python packages ..."
+# pip install "pygit2==v${PYGIT2_VERSION}" \
+    #              "M2Crypto==v${M2CRYPTO_VERSION}"
+pip install M2Crypto==v${M2CRYPTO_VERSION}
+pip install raet
+pip install timelib
 
 # Configure ssh
 echo "Configuring ssh ..."

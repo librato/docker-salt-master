@@ -4,7 +4,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 
 # https://github.com/saltstack/salt/releases
-ENV SALT_VERSION="2019.2.3" \
+ENV SALT_VERSION="2019.2.8" \
     PYTHON_VERSION="3.6" \
     LIBSSH2_VERSION="1.9.0" \
     LIBGIT2_VERSION="0.28.4" \
@@ -56,6 +56,10 @@ RUN chmod -R +x ${SALT_RUNTIME_DIR}
 
 # Cleaning tasks
 RUN rm -rf ${SALT_BUILD_DIR}/*
+
+# Install SOPS
+RUN wget https://github.com/mozilla/sops/releases/download/v3.6.1/sops_3.6.1_amd64.deb && \
+        dpkg -i sops_*.deb
 
 # Entrypoint
 COPY entrypoint.sh /sbin/entrypoint.sh

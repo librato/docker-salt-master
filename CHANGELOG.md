@@ -3,6 +3,13 @@
 This file only reflects the changes that are made in this image.
 Please refer to the SaltStack [Release Notes](https://docs.saltstack.com/en/latest/topics/releases/2019.2.3.html) for the list of changes in SaltStack.
 
+**2019.2.8-py2**
+- Upgrade SaltStack Master to `2019.2.8` with python2
+- Install sops
+- Create a python2 install
+- Remove pygit2 for python2 since we don't need it, avoid the complication
+- Install timelib and raet via pip - neither seems to be found via apt.
+
 **2019.2.3**
 
 - Upgrade SaltStack Master to `2019.2.3`
