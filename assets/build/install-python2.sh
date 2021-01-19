@@ -63,8 +63,8 @@ echo "Installing pip python packages ..."
 # pip install "pygit2==v${PYGIT2_VERSION}" \
     #              "M2Crypto==v${M2CRYPTO_VERSION}"
 pip install M2Crypto==v${M2CRYPTO_VERSION}
-pip install raet
-pip install timelib
+pip install raet timelib
+pip install boto3 boto docker awscli appoptics_metrics
 
 # Configure ssh
 echo "Configuring ssh ..."
@@ -116,3 +116,10 @@ EOF
 # purge build dependencies and cleanup apt
 DEBIAN_FRONTEND=noninteractive apt-get clean --yes
 rm -rf /var/lib/apt/lists/*
+
+
+# Install SOPS
+(cd /tmp ;
+ wget https://github.com/mozilla/sops/releases/download/v3.6.1/sops_3.6.1_amd64.deb ;
+ dpkg -i sops_*.deb )
+

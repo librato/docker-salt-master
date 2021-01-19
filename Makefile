@@ -1,3 +1,11 @@
+SALT_VERSION := $(shell grep SALT_VERSION Dockerfile.python2 | \
+                   cut -d' ' -f2 | cut -d'=' -f2 | sed 's/"//g')
+BUILD_TIMESTAMP := $(shell date +%Y%m%d%H%M)
+PY_VER=python2
+REPO_PREFIX=sre/saltstack
+
+# Use $(error <msg>) to error out
+
 all: build
 
 help:
@@ -9,6 +17,11 @@ help:
 	@echo "   3. make stop         - stop saltstack-master"
 	@echo "   4. make purge        - stop and remove the container"
 	@echo "   5. make logs         - view logs"
+	@echo "   6. make push_ecr     - push to an authenticated ECR"
+
+# Use the VERSION file after this has been run
+version:
+	@echo $(SALT_VERSION) > VERSION
 
 build:
 	@docker build --tag=cdalvaro/saltstack-master .
@@ -38,3 +51,15 @@ purge: stop
 
 logs:
 	@docker logs --follow saltstack-master-demo
+
+
+# Target-specific variables
+push_ecr: ACCTID := $(shell aws sts get-caller-identity --output text --query 'Account')
+push_ecr: REGION := $(shell aws configure get region)
+push_ecr: REGISTRY := $(ACCTID).dkr.ecr.$(REGION).amazonaws.com/sre/saltstack
+
+push_ecr: version
+	@docker build \
+	    --tag=$(REGISTRY):$(SALT_VERSION) \
+	    --tag=$(REGISTRY):$(SALT_VERSION)-$(BUILD_TIMESTAMP) \
+	    -f Dockerfile.$(PY_VER) .

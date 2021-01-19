@@ -9,6 +9,10 @@ Please refer to the SaltStack [Release Notes](https://docs.saltstack.com/en/late
 - Create a python2 install
 - Remove pygit2 for python2 since we don't need it, avoid the complication
 - Install timelib and raet via pip - neither seems to be found via apt.
+- Build with `docker build -t saltstack/2019.2.8-$(env TZ=UTC date +%Y%m%d%H%M) -f Dockerfile.python2 .`
+- Install appoptics_metrics 
+- Tag similarly to the way we've been tagging with the saltdocker repo
+
 
 **2019.2.3**
 
